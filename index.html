@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ICI Banner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+      .banner {
+        /* the featured tile, scaled down on narrow screens */
+        --tile-large: min(170px, 28vw);
+        /* standard tiles, i.e. the featured tile is twice the size */
+        --tile-small: calc(var(--tile-large) / 2);
+        /* breathing room between tiles, matching the proportions in ex.png */
+        --tile-gap: calc(var(--tile-large) * 0.05);
+
+        display: flex;
+        justify-content: center;
+        /* no flex `gap` — the spacing lives inside the links, see below */
+        /* reserve room for the largest tile so nothing on the page shifts */
+        height: var(--tile-large);
+      }
+
+      /* The spacing is padding *inside* each link rather than a gap between
+         them, and each link stretches to the full row height. That leaves no
+         dead space anywhere in the banner: the pointer passes straight from one
+         link into the next, so the swap never flickers back to ICI in transit. */
+      .banner__tile {
+        flex: none;
+        box-sizing: content-box;
+        width: var(--tile-small);
+        padding-inline: calc(var(--tile-gap) / 2);
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        transition: width 320ms cubic-bezier(.2, .7, .3, 1);
+      }
+
+      .banner__tile img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      /* ring the image, not the (taller, padded) link box */
+      .banner__tile:focus-visible {
+        outline: none;
+      }
+
+      .banner__tile:focus-visible img {
+        box-shadow: 0 0 0 3px #fff, 0 0 0 6px #212529;
+      }
+
+      /* ICI is the resting featured tile */
+      .banner__tile--ici {
+        width: var(--tile-large);
+      }
+
+      /* the hovered/focused tile grows */
+      .banner__tile:hover,
+      .banner__tile:focus-visible {
+        width: var(--tile-large);
+      }
+
+      /* some OTHER tile is hovered or focused, so ICI returns to standard size.
+         The :not() matters — without it this also fires while ICI itself is
+         hovered, and :has() carries enough specificity to beat the rule above. */
+      .banner:has(.banner__tile:not(.banner__tile--ici):hover) .banner__tile--ici,
+      .banner:has(.banner__tile:not(.banner__tile--ici):focus-visible) .banner__tile--ici {
+        width: var(--tile-small);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .banner__tile {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="banner my-5">
+      <a class="banner__tile" href="#"><img src="imgs/employment.webp" alt="Employment"></a>
+      <a class="banner__tile" href="#"><img src="imgs/community.webp" alt="Community"></a>
+      <a class="banner__tile banner__tile--ici" href="#"><img src="imgs/ici_sq.webp" alt="Institute for Community Inclusion"></a>
+      <a class="banner__tile" href="#"><img src="imgs/education.webp" alt="Education"></a>
+      <a class="banner__tile" href="#"><img src="imgs/heathcare.webp" alt="Health Care"></a>
+    </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  </body>
+</html>
